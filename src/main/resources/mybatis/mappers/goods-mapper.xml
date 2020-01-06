@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.situ.eoa.goods.dao.GoodsDao">
+  
+  <sql id="goods_base_select">
+		SELECT ROW_ID,CATELOGUE_ID ,GOODS_NAME,GOODS_NUM,GOODS_PHOTO,GOODS_PRICE,GOODS_COUNT,GOODS_PUTAWAY,GOODS_INFO,CREATE_BY,CREATE_DATE,UPDATE_BY,UPDATE_DATE FROM TB_GOODS
+	</sql>
+	
+	<insert id="save" parameterType="Goods" useGeneratedKeys="true" keyColumn="ROW_ID" keyProperty="rowId">
+		INSERT INTO TB_GOODS (GOODS_NAME,GOODS_NUM,GOODS_PHOTO,GOODS_PRICE,GOODS_COUNT,GOODS_PUTAWAY,GOODS_INFO)
+		VALUES(#{goodsName},#{goodsNum},#{goodsPhoto},#{goodsPrice},#{goodsCount},#{goodsPutaway},#{goodsInfo})
+	</insert> 
+	
+	<update id="update" parameterType="Goods">
+		UPDATE TB_GOODS
+		<set>
+		
+			<if test="goodsName!=null">
+				GOODS_NAME = #{goodsName},
+			</if>
+			
+			<if test="goodsNum!=null">
+				GOODS_NUM = #{goodsNum},
+			
+			</if>
+			
+			<if test="goodsPhoto!=null">
+				GOODS_PHOTO = #{goodsPhoto},
+			
+			</if>
+			
+			<if test="goodsPrice!=null">
+				GOODS_PRICE = #{goodsPrice},
+			</if>
+			
+			<if test="goodsCount!=null">
+				GOODS_COUNT = #{goodsCount},
+			</if>
+			
+			<if test="goodsPutaway!=null">
+				GOODS_PUTAWAY = #{goodsPutaway},
+			</if>
+			
+			<if test="goodsInfo!=null">
+				GOODS_INFO = #{goodsInfo},
+			</if>
+			
+			<if test="updateBy!=null">
+				UPDATE_BY = #{updateBy},
+			</if>
+			
+			<if test="updateDate!=null">
+				UPDATE_DATE = #{updateDate},
+			</if>
+			<if test="goodsPass!=null">
+				GOODS_PASS = #{goodsPass},
+			</if>
+		</set>
+		WHERE ROW_ID = #{rowId}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM TB_GOODS WHERE ROW_ID = #{rowId}
+	</delete>
+	
+	<select id="get" resultType="Goods">
+		<include refid="goods_base_select"/> AND ROW_ID = #{rowId}
+	</select>
+	
+	<select id="find" resultType="Goods">
+		<include refid="goods_base_select"/>
+	</select>
+	
+	<select id="findByPage" resultType="Goods">
+		<include refid="goods_base_select"/>
+		<include refid="search_sql"/>
+		 LIMIT #{firstResult},#{maxResults}
+	</select>
+	
+	<select id="getByName" resultType="Goods">
+		<include refid="goods_base_select"/> AND GOODS_NAME = #{goodsName}
+	</select>
+	
+	<select id="getCount" resultType="java.lang.Integer">
+		SELECT COUNT(ROW_ID)FROM TB_GOODS
+		<include refid="search_sql"/>
+	</select>
+	
+	<sql id="search_sql">
+		<if test="searchGoods!=null">
+			<if test="searchGoods.goodsName!=null and searchGoods.goodsName!=''">
+			AND GOODS_NAME = #{searchGoods.goodsName}
+			</if>
+			
+			<if test="searchGoods.goodsNum!=null and searchGoods.goodsNum!=''">
+			AND GOODS_NUM = #{searchGoods.goodsNum}
+			</if>
+			
+			<if test="searchGoods.goodsPhoto!=null and searchGoods.goodsPhoto!=''">
+			AND ROLE_PHOTO = #{searchGoods.goodsPhoto}
+			</if>
+			
+			<if test="searchGoods.goodsPrice!=null and searchGoods.goodsPrice!=''">
+			AND GOODS_PRICE = #{searchGoods.goodsPrice}
+			</if>
+			
+			<if test="searchGoods.goodsCount!=null and searchGoods.goodsCount!=''">
+			AND GOODS_COUNT = #{searchGoods.goodsCount}
+			</if>
+			
+			<if test="searchGoods.goodsPutaway!=null and searchGoods.goodsPutaway!=''">
+			AND GOODS_PUTAWAY = #{searchGoods.goodsPutaway}
+			</if>
+			
+			<if test="searchGoods.goodsInfo!=null and searchGoods.goodsInfo!=''">
+			AND GOODS_INFO = #{searchGoods.goodsInfo}
+			</if>
+		</if>
+	</sql>
+	
+	</mapper>

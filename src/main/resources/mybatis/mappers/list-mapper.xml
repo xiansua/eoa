@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.situ.eoa.role.dao.RoleDao">
+
+	<sql id="role_base_select">
+		SELECT ROW_ID,LIST_NAME,CREATE_BY,CREATE_DATE,UPDATE_BY,UPDATE_DATE FROM TB_LIST
+	</sql>
+
+	<insert id="save" parameterType="Lists" useGeneratedKeys="true" keyColumn="ROW_ID" keyProperty="rowId">
+		INSERT INTO TB_LIST(LIST_NAME,CREATE_BY,CREATE_DATE)
+		VALUES(#{listName},#{createBy},#{createDate})
+	</insert>
+	
+	<update id="update" parameterType="List">
+		UPDATE TB_LIST
+		<set>
+			<if test="listName!=null">
+				LIST_NAME = #{roleName}
+			</if>
+			<if test="updateBy!=null">
+				UPDATE_BY = #{updateBy}
+			</if>
+			<if test="updateDate!=null">
+				UPDATE_DATE = #{updateDate}
+			</if>
+		</set>
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM LIST_ROLE WHERE ROW_ID = #{rowId}
+	</delete>
+	
+	<select id="get" resultType="Lists">
+		<include refid="list_base_select"/> AND ROW_ID = #{rowId}
+	</select>
+	
+	<select id="find" resultType="Lists">
+		<include refid="list_base_select"/>
+	</select>
+</mapper>

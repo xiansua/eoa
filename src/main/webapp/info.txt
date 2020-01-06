@@ -1,0 +1,6 @@
+1,前台页面提交 日期格式的数据时，
+		需要在domain类中的Date的属性上面使用 @DateTimeFormat(pattern = "yyyy-MM-dd")进行修饰
+		告诉SpringMVC将字符串格式的数据转换成Date类型。
+2,前台页面 提交 多个name一样的数据的时候。
+	   controller层 可以使用 数组格式的参数去接受  (String[]userLike)
+	   如果想用集合去接受的话，需要在domain类定义集合类型的属性  (private List<String>userLike)
